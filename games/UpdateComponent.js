@@ -7,7 +7,7 @@ class UpdateComponent extends Component {
 
     // ground
     groundY = 480
-    playerBottom = 56
+    playerBottom = 0
 
     //jumping
     jumpStrength = -12

@@ -5,7 +5,7 @@ class GroundGameObject extends GameObject {
         this.layer = -2
 
         this.addComponent(new Polygon(), {
-            fillStyle: "gray",
+            fillStyle: "lightgreen",
             points: [
                 new Vector2(-480, 0),
                 new Vector2(480, 0),

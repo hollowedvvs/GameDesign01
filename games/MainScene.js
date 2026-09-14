@@ -2,6 +2,14 @@ class MainScene extends Scene {
     constructor() {
         super()
 
+
+
+        let temp = []
+
+        // for (const gameObject of this.gameObjects){
+        //     if(!gameObject.markforDestroy)
+        //         temp.push(gameObject)
+        // }
         // player
         this.instantiate(
             new MainGameObject(),
