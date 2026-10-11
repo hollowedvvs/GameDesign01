@@ -1,46 +1,43 @@
 <html>
-    <head>
-        <title>Game Loop</title>
-        <style>
-            *{
-                margin:0;
-                overflow: hidden;
-            }
-        </style>
-    </head>
-    <body>
-        <canvas id="canv">
-    
-        </canvas>
-        <script src="Vector2.js"></script>
-        <script>
-            let canvas = document.querySelector("#canv")
-            let ctx = canvas.getContext("2d")
-           
+<head>
+    <title>Game Loop</title>
+    <style>
+        * {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canv"></canvas>
 
+    <script src="Vector2.js"></script>
+    <script>
+        let canvas = document.querySelector("#canv")
+        let ctx = canvas.getContext("2d")
 
+        //position
+        let position = new Vector2(50, 50)
 
-            //position
-            let position = new Vector2(50, 50)
-            
+        function gameLoop() {
+            update()
+            draw()
+            requestAnimationFrame(gameLoop)
+        }
 
-            function gameLoop(){
-                update()
-                draw()
-                requestAnimationFrame(gameLoop)
-                
-            }
-            function update(){
+        function update() {
             position.x = position.x + 2
-            }
-            function draw(){
+        }
+
+        function draw() {
             //canvas size
             canvas.width = window.innerWidth
             canvas.height = window.innerHeight
 
-           //going to draw something
+            //going to draw something
             ctx.save()
-           //center
+
+            //center
             ctx.translate(position.x, position.y)
             ctx.lineTo(0, -20)
             ctx.lineTo(10, -30)
@@ -49,19 +46,13 @@
             ctx.lineTo(60, -50)
             ctx.lineTo(55, 0)
             ctx.lineTo(0, 40)
-           
-           
+
             ctx.fillStyle = "black"
             ctx.fill()
             ctx.restore()
         }
+
         requestAnimationFrame(gameLoop)
-        
-        
-
-
-        </script>
-    </body>
-</html>          
-          
-
+    </script>
+</body>
+</html>
