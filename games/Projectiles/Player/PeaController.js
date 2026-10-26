@@ -1,20 +1,23 @@
-class LaserController extends ProjectileController {
-    //laser settings
+class PeaController extends ProjectileController {
+    //pea settings
     speed = 7
     damage = 1
     targetTag = "Enemy"
-    hitDistance = 15
+
+    //old distance collision
+    //hitDistance = 15
+
     destroyOffscreen = true
     pointsOnHit = 1
 
-    //old laser controller
+    //old pea controller
     //all of this is now handled by ProjectileController
     /*
     //commands direction
     direction = new Vector2(0, -1)
 
     update() {
-        //move laser
+        //move pea
         this.transform.position.x += this.direction.x * 7
         this.transform.position.y += this.direction.y * 7
 

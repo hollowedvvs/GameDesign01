@@ -1,4 +1,7 @@
+//custom game code
+//shared parent for objects that use momentum, collision, gravity, and centered projectile spawning
 class PhysicsGameObject extends GameObject {
+    flipX = false
     gravityScale = 1
 
     constructor(name, tags = [], layer = "default") {
@@ -34,5 +37,18 @@ class PhysicsGameObject extends GameObject {
 
     get collider() {
         return this.getComponent(Collider)
+    }
+
+    getCenterPosition() {
+        let position = TransformHelpers.getWorldPosition(this.transform)
+        let collider = this.getComponent(Collider)
+
+        if (!collider) {
+            return position
+        }
+
+        position.x += collider.offsetX
+        position.y += collider.offsetY
+        return position
     }
 }

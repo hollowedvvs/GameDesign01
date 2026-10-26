@@ -1,3 +1,5 @@
+//custom game code
+//shared draw helper used by custom drawing components
 class DrawComponent extends Component {
     draw(ctx) {
 

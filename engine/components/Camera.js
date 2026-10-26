@@ -1,8 +1,8 @@
-class Camera extends Component{
+class Camera extends Component {
     backgroundColor = "white"
 
-    static get main(){
+    //gets the camera tagged as the main camera
+    static get main() {
         return GameObject.findGameObjectsWithTag("MainCamera")[0].getComponent(Camera)
     }
-
 }

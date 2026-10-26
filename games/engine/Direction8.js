@@ -1,3 +1,5 @@
+//custom game code
+//snaps aim vectors and rotations to 8 compass directions
 class Direction8 {
     static snap(direction) {
         let angle = Math.atan2(direction.y, direction.x)

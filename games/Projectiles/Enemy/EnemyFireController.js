@@ -10,8 +10,8 @@ class EnemyFireController extends ProjectileController {
     //enemy fire only hits player
     targetTag = "Player"
 
-    //slightly larger hit range
-    hitDistance = 25
+    //old distance collision
+    //hitDistance = 25
 
     //old enemy fire controller
     //movement, range, collision, and damage are now handled by ProjectileController

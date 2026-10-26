@@ -1,9 +1,12 @@
 class PlayerPowerController extends Component {
     facing = 1
 
+    //currently equipped power
+    currentPower = "pea"
+
     //pea power
-    timeSinceLastLaser = 0
-    laserCooldown = 300
+    timeSinceLastPea = 0
+    peaCooldown = 300
 
     //old fire fuel system
     /*
@@ -41,7 +44,7 @@ class PlayerPowerController extends Component {
     fireDirection = new Vector2(1, 0)
 
     start() {
-        this.timeSinceLastLaser = 0
+        this.timeSinceLastPea = 0
 
         //old fire timer
         //this.timeSinceLastFire = 0
@@ -51,10 +54,13 @@ class PlayerPowerController extends Component {
     }
 
     update() {
-        this.timeSinceLastLaser += Engine.fixedDelta
+        this.timeSinceLastPea += GameTime.fixedDelta
 
         //old fire timer
-        //this.timeSinceLastFire += Engine.fixedDelta
+        //this.timeSinceLastFire += GameTime.fixedDelta
+
+        //fire charges regenerate no matter which power is equipped
+        this.updateFireRegen()
 
         //gets facing direction from player movement
         let movement = this.gameObject.getComponent(UpdateComponent)
@@ -63,8 +69,50 @@ class PlayerPowerController extends Component {
             this.facing = movement.facing
         }
 
-        this.updatePea()
-        this.updateFire()
+        this.updatePowerSwitch()
+
+        if (this.currentPower == "pea") {
+            this.updatePea()
+        }
+        else if (this.currentPower == "fire") {
+            this.updateFire()
+        }
+    }
+
+    updatePowerSwitch() {
+        //f swaps between powers
+        if (!GameInput.getKeyDown("KeyF")) {
+            return
+        }
+
+        if (this.currentPower == "pea") {
+            this.setPower("fire")
+        }
+        else if (this.currentPower == "fire") {
+            this.setPower("pea")
+        }
+    }
+
+    setPower(power) {
+        //switching away during a burst starts its cooldown
+        if (this.currentPower == "fire" && power != "fire" && this.fireBursting) {
+            this.fireCooldownTimer = 0
+        }
+
+        this.currentPower = power
+
+        //stops fire burst when switching away
+        if (power != "fire") {
+            this.fireBursting = false
+            this.fireBurstTimer = 0
+        }
+
+        //updates star color
+        let stars = GameObject.findGameObjectsWithTag("PlayerPower")
+
+        if (stars.length > 0) {
+            stars[0].setPower(power)
+        }
     }
 
     getAttackDirection() {
@@ -72,10 +120,10 @@ class PlayerPowerController extends Component {
         let direction = new Vector2(this.facing, 0)
 
         //aim uses held input
-        if (Input.getKey("ArrowUp") || Input.getKey("KeyW")) {
+        if (GameInput.getKey("ArrowUp") || GameInput.getKey("KeyW")) {
             direction = new Vector2(0, -1)
         }
-        else if (Input.getKey("ArrowDown") || Input.getKey("KeyS")) {
+        else if (GameInput.getKey("ArrowDown") || GameInput.getKey("KeyS")) {
             direction = new Vector2(0, 1)
         }
 
@@ -92,26 +140,41 @@ class PlayerPowerController extends Component {
         */
 
         //one press fires one pea
-        if (!Input.getKeyDown("Space")) {
+        if (!GameInput.getKeyDown("Space")) {
             return
         }
 
-        if (this.timeSinceLastLaser < this.laserCooldown) {
+        if (this.timeSinceLastPea < this.peaCooldown) {
             return
         }
 
-        this.timeSinceLastLaser = 0
+        this.timeSinceLastPea = 0
 
         let direction = this.getAttackDirection()
 
-        instantiate(new LaserGameObject(direction), this.transform.position.clone())
+        gameInstantiate(new PeaGameObject(direction), this.gameObject.getCenterPosition())
+    }
+
+    updateFireRegen() {
+        //regen one fire use every 2 seconds
+        if (this.fireUses < this.maxFireUses) {
+            this.fireRegenTimer += GameTime.fixedDelta
+
+            if (this.fireRegenTimer >= this.fireRegenTime) {
+                this.fireUses += 1
+                this.fireRegenTimer -= this.fireRegenTime
+            }
+        }
+        else {
+            this.fireRegenTimer = 0
+        }
     }
 
     updateFire() {
         //old fuel based fire system
         /*
-        let fireDown = Input.getKeyDown("KeyF")
-        let seconds = Engine.fixedDelta / 1000
+        let fireDown = GameInput.getKeyDown("KeyF")
+        let seconds = GameTime.fixedDelta / 1000
 
         if (fireDown) {
             this.timeSinceFireReleased = 0
@@ -139,8 +202,8 @@ class PlayerPowerController extends Component {
             return
         }
 
-        if (!Input.getKey("KeyF")) {
-            this.timeSinceFireReleased += Engine.fixedDelta
+        if (!GameInput.getKey("KeyF")) {
+            this.timeSinceFireReleased += GameTime.fixedDelta
         }
 
         if (this.timeSinceFireReleased < this.fireRegenDelay) {
@@ -154,27 +217,17 @@ class PlayerPowerController extends Component {
         }
         */
 
-        //regen one fire use every 2 seconds
-        if (this.fireUses < this.maxFireUses) {
-            this.fireRegenTimer += Engine.fixedDelta
-
-            if (this.fireRegenTimer >= this.fireRegenTime) {
-                this.fireUses += 1
-                this.fireRegenTimer -= this.fireRegenTime
-            }
-        }
-        else {
-            this.fireRegenTimer = 0
-        }
-
         //active fire burst
         if (this.fireBursting) {
-            this.fireBurstTimer += Engine.fixedDelta
-            this.timeSinceLastFlame += Engine.fixedDelta
+            //ignore extra presses during burst
+            GameInput.getKeyDown("Space")
+
+            this.fireBurstTimer += GameTime.fixedDelta
+            this.timeSinceLastFlame += GameTime.fixedDelta
 
             if (this.timeSinceLastFlame >= this.fireRate) {
                 this.timeSinceLastFlame = 0
-                instantiate(new FireGameObject(this.fireDirection), this.transform.position.clone())
+                gameInstantiate(new FireGameObject(this.fireDirection), this.gameObject.getCenterPosition())
             }
 
             if (this.fireBurstTimer >= this.fireBurstDuration) {
@@ -187,10 +240,10 @@ class PlayerPowerController extends Component {
         }
 
         //delay before another burst can start
-        this.fireCooldownTimer += Engine.fixedDelta
+        this.fireCooldownTimer += GameTime.fixedDelta
 
-        //one press starts one full burst
-        if (!Input.getKeyDown("KeyF")) {
+        //space starts one full burst
+        if (!GameInput.getKeyDown("Space")) {
             return
         }
 

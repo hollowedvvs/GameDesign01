@@ -1,8 +1,46 @@
-class EnemyGameObject extends BaseEnemyGameObject {
+class LeafyGameObject extends BaseEnemyGameObject {
     head = null
 
     constructor() {
-        super("Leafy", 2, 600)
+        super("Leafy", 2, {
+            detectionRange: 600,
+            absorbPower: "pea"
+        })
+        //custom leafy hitbox
+        let collider = this.getComponent(Collider)
+        collider.width = 20
+        collider.height = 20
+        collider.offsetX = 0
+        collider.offsetY = 0
+
+        //combat hitbox
+        let hitbox = new PolygonHitbox()
+
+        this.addComponent(hitbox, {
+            //main body
+            points: [
+                new Vector2(-15, -30),
+                new Vector2(15, -30),
+                new Vector2(15, 0),
+                new Vector2(-15, 0)
+            ]
+        })
+
+        //left leg
+        hitbox.addShape([
+            new Vector2(-18, 0),
+            new Vector2(-3, 0),
+            new Vector2(-3, 20),
+            new Vector2(-18, 20)
+        ])
+
+        //right leg
+        hitbox.addShape([
+            new Vector2(3, 0),
+            new Vector2(18, 0),
+            new Vector2(18, 20),
+            new Vector2(3, 20)
+        ])
 
         //Leafy is static but still keeps momentum for knockback
         this.gravityScale = 0
@@ -24,7 +62,7 @@ class EnemyGameObject extends BaseEnemyGameObject {
             points: [new Vector2(3, 0), new Vector2(18, 0), new Vector2(18, 20), new Vector2(3, 20)]
         })
 
-        this.addEnemyController(new EnemyController())
+        this.addEnemyController(new LeafyController())
     }
 
     start() {

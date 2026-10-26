@@ -1,5 +1,6 @@
 class BaseEnemyGameObject extends PhysicsGameObject {
     settings = {}
+    absorbPower = null
 
     constructor(typeTag, health, settings = {}) {
         //old setup only passed detection range as a number
@@ -15,10 +16,13 @@ class BaseEnemyGameObject extends PhysicsGameObject {
         }
 
         let detectionRange = settings.detectionRange ?? 0
-
-        super("Enemy", ["Enemy", typeTag, "Detection:" + detectionRange], "default")
+        
+        super("Enemy", ["Enemy", typeTag, "Detection:" + detectionRange], "Enemies")
 
         this.settings = settings
+
+        //power given when absorbed
+        this.absorbPower = settings.absorbPower ?? null
 
         //old Momentum setup
         //now handled by PhysicsGameObject

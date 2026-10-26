@@ -3,6 +3,6 @@ class Globals {
     static points = 0
 
     //future game wide values go in here
-    //examples: powers, unlocked, levels completed etc
+    //ex.powers, unlocked, levels completed
 
 }

@@ -1,3 +1,5 @@
+//custom game code
+//updates the global score and points ui when points change
 class PointsController extends Component {
     start() {
         //sets starting score text

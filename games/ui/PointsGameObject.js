@@ -12,7 +12,7 @@ class PointsGameObject extends GameObject {
         super("PointsGameObject", ["Points"], "UI")
 
         this.addComponent(new TextLabel(), {
-            text: "0 points"
+            text: "0 points", font: "20px Arial"
         })
 
         this.addComponent(new PointsController())

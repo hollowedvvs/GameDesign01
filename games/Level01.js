@@ -11,7 +11,7 @@ class Level01 extends GenericLevel {
         this.instantiate(new GroundGameObject(), new Vector2(0, 480))
 
         //enemy
-        this.instantiate(new EnemyGameObject(), new Vector2(150, 270))
+        this.instantiate(new LeafyGameObject(), new Vector2(150, 470))
 
         //old points setup
         //now handled by GenericLevel

@@ -1,29 +1,31 @@
 class TextLabel extends Component {
+    //text color
     fillStyle = "black"
+
+    //text being displayed
     text = "[BLANK]"
-    font = "20px Arial" //sizepx font
+
+    //game text size
+    font = "20px Arial"
 
     draw(ctx) {
-        //old transform system
-        //gameobject.draw() now handles position, scale, and rotation
-        //let position = this.transform.position
-
+        //engine already handles canvas size and clearing
         ctx.save()
 
-        //old transform system
-        //ctx.translate(position.x, position.y)
+        //old transform drawing
+        //gameobject now handles the transform before components draw
+        //ctx.translate(this.transform.position.x, this.transform.position.y)
         //ctx.scale(this.transform.scale.x, this.transform.scale.y)
         //ctx.rotate(this.transform.rotation)
 
         ctx.fillStyle = this.fillStyle
         ctx.font = this.font
+
+        //game text alignment
         ctx.textAlign = "left"
         ctx.textBaseline = "middle"
 
         ctx.fillText(this.text, 0, 0)
-
-        //html ctx measuretext
-
         ctx.restore()
     }
 }

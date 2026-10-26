@@ -1,3 +1,5 @@
+//custom game code
+//draws the game pixel art from point lists and blends touching pixel borders
 class PixelShape extends Component {
     fillStyle = "magenta"
     points = []
@@ -56,11 +58,12 @@ class PixelShape extends Component {
     }
 
     draw(ctx) {
-        let position = this.transform.position
-
         ctx.save()
 
-        ctx.translate(position.x, position.y)
+        //old position system
+        //the class GameObject already applies the transform world matrix before drawing components
+        //let position = this.transform.position
+        //ctx.translate(position.x, position.y)
 
         ctx.scale(this.gameObject.flipX ? -this.scale : this.scale, this.scale)
 

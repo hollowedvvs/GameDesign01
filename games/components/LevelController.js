@@ -1,3 +1,5 @@
+//custom game code
+//loads the next level after all enemies are cleared
 class LevelController extends Component {
     nextLevel = null
 

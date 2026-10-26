@@ -12,8 +12,8 @@ class PlayerFireController extends ProjectileController {
     //player fire only hits enemies
     targetTag = "Enemy"
 
-    //larger hit range than pea
-    hitDistance = 20
+    //old distance collision
+    //hitDistance = 20
 
     //gives points
     pointsOnHit = 1

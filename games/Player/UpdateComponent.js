@@ -42,8 +42,8 @@ class UpdateComponent extends Component {
     //old pea power
     //now handled by PlayerPowerController
     /*
-    timeSinceLastLaser = 0
-    laserCooldown = 300
+    timeSinceLastPea = 0
+    peaCooldown = 300
     */
 
     //old fire power
@@ -65,7 +65,7 @@ class UpdateComponent extends Component {
         //old power timers
         //now handled by PlayerPowerController
         /*
-        this.timeSinceLastLaser = 0
+        this.timeSinceLastPea = 0
         this.timeSinceLastFire = 0
         */
     }
@@ -94,15 +94,15 @@ class UpdateComponent extends Component {
     */
 
     update() {
-        this.timeSinceLastDash += Engine.fixedDelta
+        this.timeSinceLastDash += GameTime.fixedDelta
 
         let momentum = this.gameObject.getComponent(Momentum)
         let collider = this.gameObject.getComponent(Collider)
         let onGround = collider ? collider.grounded : false
 
         //movement uses held inputs
-        let moveRight = Input.getKey("ArrowRight") || Input.getKey("KeyD")
-        let moveLeft = Input.getKey("ArrowLeft") || Input.getKey("KeyA")
+        let moveRight = GameInput.getKey("ArrowRight") || GameInput.getKey("KeyD")
+        let moveLeft = GameInput.getKey("ArrowLeft") || GameInput.getKey("KeyA")
 
         let moveDirection = 0
 
@@ -148,7 +148,7 @@ class UpdateComponent extends Component {
         }
 
         //dash only triggers once per key press
-        let dashDown = Input.getKeyDown("ShiftLeft") || Input.getKeyDown("ShiftRight")
+        let dashDown = GameInput.getKeyDown("ShiftLeft") || GameInput.getKeyDown("ShiftRight")
 
         if (dashDown && !this.dashQueued && this.timeSinceLastDash >= this.dashCooldown) {
             this.dashQueued = true
@@ -158,7 +158,7 @@ class UpdateComponent extends Component {
 
         //dash delay
         if (this.dashQueued) {
-            this.dashDelayTimer += Engine.fixedDelta
+            this.dashDelayTimer += GameTime.fixedDelta
 
             if (this.dashDelayTimer >= this.dashDelay) {
                 momentum.addForce(this.dashDirection * this.dashStrength, 0)
@@ -170,7 +170,7 @@ class UpdateComponent extends Component {
         }
 
         //jump only triggers once per key press
-        let jumpDown = Input.getKeyDown("ArrowUp") || Input.getKeyDown("KeyW")
+        let jumpDown = GameInput.getKeyDown("ArrowUp") || GameInput.getKeyDown("KeyW")
 
         if (jumpDown && this.jumpsRemaining > 0) {
             momentum.velocityY = this.jumpStrength
@@ -182,7 +182,7 @@ class UpdateComponent extends Component {
         }
 
         //down / fast fall stays held input
-        if (Input.getKey("ArrowDown") || Input.getKey("KeyS")) {
+        if (GameInput.getKey("ArrowDown") || GameInput.getKey("KeyS")) {
             if (momentum.velocityY > 0) {
                 momentum.addForce(0, 1.5)
             }
@@ -215,11 +215,11 @@ class UpdateComponent extends Component {
         //old pea firing
         //now handled by PlayerPowerController
         /*
-        if (Input.keysDown.includes("Space") && this.timeSinceLastLaser >= this.laserCooldown) {
-            this.timeSinceLastLaser = 0
+        if (Input.keysDown.includes("Space") && this.timeSinceLastPea >= this.peaCooldown) {
+            this.timeSinceLastPea = 0
 
             let direction = this.getAttackDirection()
-            instantiate(new LaserGameObject(direction), this.gameObject.transform.position.clone())
+            instantiate(new PeaGameObject(direction), this.gameObject.transform.position.clone())
         }
         */
 
@@ -227,7 +227,7 @@ class UpdateComponent extends Component {
         //now handled by PlayerPowerController
         /*
         let fireDown = Input.keysDown.includes("KeyF")
-        let seconds = Engine.fixedDelta / 1000
+        let seconds = GameTime.fixedDelta / 1000
 
         if (fireDown) {
             this.timeSinceFireReleased = 0
@@ -249,7 +249,7 @@ class UpdateComponent extends Component {
         }
 
         else {
-            this.timeSinceFireReleased += Engine.fixedDelta
+            this.timeSinceFireReleased += GameTime.fixedDelta
 
             if (this.timeSinceFireReleased >= this.fireRegenDelay) {
                 this.fireFuel += this.fireRegenPerSecond * seconds
@@ -269,5 +269,18 @@ class UpdateComponent extends Component {
 
         //camera follows upward but stops moving down at ground
         Camera.main.transform.position.y = Math.min(this.transform.position.y, cameraGroundY)
+
+        // const enemies = GameObject.findGameObjectsWithTag("Enemy")
+        // for(const enemy of enemies){
+        //     if (Collisions.isCollisionPolygonPolygon(this.gameObject, enemy)){
+        //     console.log("Collision")
+        //     }
+        // }
+    }
+    onCollisionStay(other){
+        console.log(other)
+    }
+    onMouseOver(){
+        console.log("Mouse Over")
     }
 }

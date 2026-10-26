@@ -45,7 +45,7 @@ class FireEnemyController extends BaseEnemyController {
     start() {
         this.homeX = this.transform.position.x
 
-    
+
     }
 
     update() {
@@ -72,8 +72,8 @@ class FireEnemyController extends BaseEnemyController {
         let moveDirection = this.patrolDirection
 
         //old player lookup
-    
-       // let players = GameObject.findGameObjectsWithTag("Player")
+
+        // let players = GameObject.findGameObjectsWithTag("Player")
 
         // if (players.length > 0) {
         //     let player = players[0]
@@ -82,7 +82,7 @@ class FireEnemyController extends BaseEnemyController {
         //     let verticalDistance = Math.abs(difference.y)
         //     let playerDirection = Math.sign(difference.x)
         // }
-    
+
 
         if (this.player) {
             let direction = this.playerDirection
@@ -92,18 +92,18 @@ class FireEnemyController extends BaseEnemyController {
             }
 
             //old detection system
-            
+
             // let playerDetected =
             //     horizontalDistance <= this.detectionRange &&
             //     verticalDistance <= this.verticalAttackRange
-            
+
 
             let detected = this.playerDetected()
 
             //windup
             if (this.attackState === "windup") {
                 moveDirection = 0
-                this.attackTimer += Engine.fixedDelta
+                this.attackTimer += GameTime.fixedDelta
 
                 if (this.attackTimer >= settings.attackWindup) {
                     this.attackState = "firing"
@@ -115,16 +115,13 @@ class FireEnemyController extends BaseEnemyController {
             //firing burst
             else if (this.attackState === "firing") {
                 moveDirection = 0
-                this.attackTimer += Engine.fixedDelta
-                this.timeSinceLastFire += Engine.fixedDelta
+                this.attackTimer += GameTime.fixedDelta
+                this.timeSinceLastFire += GameTime.fixedDelta
 
                 if (this.timeSinceLastFire >= settings.fireRate) {
                     this.timeSinceLastFire = 0
 
-                    instantiate(
-                        new EnemyFireGameObject(new Vector2(this.attackDirection, 0)),
-                        this.transform.position.clone()
-                    )
+                    gameInstantiate(new EnemyFireGameObject(new Vector2(this.attackDirection, 0)), this.gameObject.getCenterPosition())
                 }
 
                 if (this.attackTimer >= settings.attackDuration) {
@@ -136,7 +133,7 @@ class FireEnemyController extends BaseEnemyController {
             //delay between bursts
             else if (this.attackState === "cooldown") {
                 moveDirection = 0
-                this.attackTimer += Engine.fixedDelta
+                this.attackTimer += GameTime.fixedDelta
 
                 if (this.attackTimer >= settings.attackCooldown) {
                     this.attackState = "idle"
@@ -200,11 +197,11 @@ class FireEnemyController extends BaseEnemyController {
 
         //old hardcoded ground collision
         //now handled by CollisionManager and GroundGameObject
-        
+
         // if (this.transform.position.y >= this.groundY) {
         //     this.transform.position.y = this.groundY
         //     momentum.velocityY = 0
         // }
-        
+
     }
 }

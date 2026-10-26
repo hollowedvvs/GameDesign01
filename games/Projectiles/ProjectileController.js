@@ -8,7 +8,9 @@ class ProjectileController extends Component {
 
     //what this projectile can hit
     targetTag = null
-    hitDistance = 15
+
+    //old distance collision
+    //hitDistance = 15
 
     //optional range limit
     maxDistance = null
@@ -41,7 +43,6 @@ class ProjectileController extends Component {
 
     moveProjectile() {
         this.transform.position.x += this.direction.x * this.speed
-
         this.transform.position.y += this.direction.y * this.speed
     }
 
@@ -65,11 +66,8 @@ class ProjectileController extends Component {
         let cameraPosition = Camera.main.transform.position
 
         let left = cameraPosition.x - Engine.canvas.width / 2 - 10
-
         let right = cameraPosition.x + Engine.canvas.width / 2 + 10
-
         let top = cameraPosition.y - Engine.canvas.height / 2 - 10
-
         let bottom = cameraPosition.y + Engine.canvas.height / 2 + 10
 
         if (this.transform.position.x < left || this.transform.position.x > right || this.transform.position.y < top || this.transform.position.y > bottom) {
@@ -88,11 +86,28 @@ class ProjectileController extends Component {
                 continue
             }
 
+            let hitbox = target.getComponent(PolygonHitbox)
+
+            //target needs a combat hitbox
+            if (!hitbox) {
+                continue
+            }
+
+            let projectilePosition = TransformHelpers.getWorldPosition(this.transform)
+
+            //old distance collision
+            /*
             let distance = this.transform.position.minus(target.transform.position).magnitude
 
             if (distance < this.hitDistance) {
                 this.hitTarget(target)
+                return
+            }
+            */
 
+            //checks projectile point against all hitbox shapes
+            if (hitbox.containsPoint(projectilePosition)) {
+                this.hitTarget(target)
                 return
             }
         }

@@ -15,34 +15,48 @@
 
     <canvas id="canv"></canvas>
 
-    <!-- engine -->
+    <!-- class engine -->
     <script src="../engine/Vector2.js"></script>
-    <script src="../engine/input.js"></script>
-    <script src="../engine/Components.js"></script>
+    <script src="../engine/Input.js"></script>
+    <script src="../engine/Component.js"></script>
+    <script src="../engine/Time.js"></script>
+    <script src="../engine/Collisions.js"></script>
 
-    <!-- shared direction system -->
-    <script src="../engine/Direction8.js"></script>
-
-    <!-- engine components -->
+    <!-- class engine components -->
     <script src="../engine/components/Transform.js"></script>
     <script src="../engine/components/Polygon.js"></script>
-    <script src="../engine/components/PixelShape.js"></script>
     <script src="../engine/components/TextLabel.js"></script>
-    <script src="../engine/components/Health.js"></script>
-    <script src="../engine/components/PointsController.js"></script>
-    <script src="../engine/components/LevelController.js"></script>
+    <script src="../engine/components/MultiLineTextLabel.js"></script>
     <script src="../engine/components/Camera.js"></script>
-    <script src="../engine/components/Momentum.js"></script>
-    <script src="../engine/components/Collider.js"></script>
 
-    <!-- engine gameobjects -->
+    <!-- class engine gameobjects and scenes -->
     <script src="../engine/GameObject.js"></script>
-    <script src="../engine/PhysicsGameObject.js"></script>
-
-    <!-- engine scene -->
     <script src="../engine/Scene.js"></script>
     <script src="../engine/SceneManager.js"></script>
     <script src="../engine/Engine.js"></script>
+
+    <!-- custom game engine helpers -->
+    <script src="engine/GameInput.js"></script>
+    <script src="engine/GameTime.js"></script>
+    <script src="engine/GameEngine.js"></script>
+    <script src="engine/GameInstantiate.js"></script>
+    <script src="engine/TransformHelpers.js"></script>
+    <script src="engine/Direction8.js"></script>
+
+    <!-- custom game components -->
+    <script src="components/PixelShape.js"></script>
+    <script src="components/Health.js"></script>
+    <script src="components/PointsController.js"></script>
+    <script src="components/LevelController.js"></script>
+    <script src="components/Momentum.js"></script>
+    <script src="components/Collider.js"></script>
+    <script src="components/PolygonHitbox.js"></script>
+
+    <!-- old unused draw component -->
+    <!--<script src="components/DrawComponent.js"></script>-->
+
+    <!-- custom physics parent -->
+    <script src="engine/PhysicsGameObject.js"></script>
 
     <!-- globals -->
     <script src="Globals.js"></script>
@@ -51,41 +65,43 @@
     <script src="Projectiles/ProjectileController.js"></script>
     <script src="Projectiles/ProjectileGameObject.js"></script>
 
-    <!-- player laser -->
-    <script src="Projectiles/LaserController.js"></script>
-    <script src="Projectiles/LaserGameObject.js"></script>
+    <!-- player pea -->
+    <script src="Projectiles/Player/PeaController.js"></script>
+    <script src="Projectiles/Player/PeaGameObject.js"></script>
 
     <!-- player fire -->
-    <script src="Projectiles/PlayerFireController.js"></script>
-    <script src="Projectiles/FireGameObject.js"></script>
+    <script src="Projectiles/Player/PlayerFireController.js"></script>
+    <script src="Projectiles/Player/FireGameObject.js"></script>
 
-    <!-- enemy laser -->
-    <script src="Projectiles/EnemyLaser.js"></script>
-    <script src="Projectiles/EnemyLaserGameObject.js"></script>
+    <!-- enemy pea -->
+    <script src="Projectiles/Enemy/EnemyPeaController.js"></script>
+    <script src="Projectiles/Enemy/EnemyPeaGameObject.js"></script>
 
     <!-- enemy fire -->
-    <script src="Projectiles/EnemyFireController.js"></script>
-    <script src="Projectiles/EnemyFireGameObject.js"></script>
+    <script src="Projectiles/Enemy/EnemyFireController.js"></script>
+    <script src="Projectiles/Enemy/EnemyFireGameObject.js"></script>
 
     <!-- enemy parents -->
     <script src="Enemies/BaseEnemyController.js"></script>
     <script src="Enemies/BaseEnemyGameObject.js"></script>
 
     <!-- leafy -->
+    <script src="Enemies/Leafy/TMuzzle.js"></script>
     <script src="Enemies/Leafy/THead.js"></script>
-    <script src="Enemies/Leafy/EnemyController.js"></script>
-    <script src="Enemies/Leafy/EnemyGameObject.js"></script>
+    <script src="Enemies/Leafy/LeafyController.js"></script>
+    <script src="Enemies/Leafy/LeafyGameObject.js"></script>
 
     <!-- fire enemy -->
     <script src="Enemies/Fire/FireEnemyController.js"></script>
-    <script src="Enemies/Fire/FireEnemy.js"></script>
+    <script src="Enemies/Fire/FireEnemyGameObject.js"></script>
 
     <!-- enemy helper -->
-    <!--<script src="Enemies/Helper/HelperGameObject.js"></script>-->
+    <!--<script src="Helper/HelperGameObject.js"></script>-->
 
     <!-- player -->
     <script src="Player/UpdateComponent.js"></script>
     <script src="Player/PlayerPowerController.js"></script>
+    <script src="Player/PlayerAbsorbController.js"></script>
     <script src="Player/PlayerGameObject.js"></script>
     <script src="Player/PlayerStarGameObject.js"></script>
 
@@ -108,7 +124,7 @@
 
     <!-- start game -->
     <script>
-        Engine.start(Level01, Settings)
+        GameEngine.start(Level01, Settings)
     </script>
 
 </body>

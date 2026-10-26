@@ -1,6 +1,12 @@
 class GenericLevel extends Scene {
+    //custom level physics
+    //levels can override these for things like ice or underwater movement
+    gravity = 0.8
+    airFriction = 0.03
+
     constructor() {
-        super()
+        //shared level background uses the class Scene constructor
+        super("Cyan")
 
         //player
         let playerGameObject = this.instantiate(new PlayerGameObject(), new Vector2(50, 50))
@@ -15,8 +21,9 @@ class GenericLevel extends Scene {
         //points ui
         this.instantiate(new PointsGameObject(), new Vector2(20, 30))
 
-        //shared camera background
-        this.mainCamera.backgroundColor = "Cyan"
+        //old camera background setup
+        //Scene now gets the shared color through super("Cyan")
+        //this.mainCamera.backgroundColor = "Cyan"
 
         //old parent child test
         //player star now handles the real parent child example
@@ -25,5 +32,13 @@ class GenericLevel extends Scene {
 
         helperGameObject.transform.setParent(mainGameObject.transform)
         */
+    }
+
+    update() {
+        //class scene updates every game object first
+        super.update()
+
+        //custom game collision runs after physics objects have moved
+        CollisionManager.update()
     }
 }

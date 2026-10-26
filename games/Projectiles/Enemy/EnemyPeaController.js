@@ -1,9 +1,9 @@
-class EnemyLaserController extends ProjectileController {
-    //enemy laser settings
+class EnemyPeaController extends ProjectileController {
+    //enemy pea settings
     speed = 7
     destroyOffscreen = true
 
-    //old enemy laser controller
+    //old enemy pea controller
     //movement and screen bounds are now handled by ProjectileController
     /*
     direction = new Vector2(0, 1)

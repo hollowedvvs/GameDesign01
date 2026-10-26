@@ -1,4 +1,4 @@
-class LaserGameObject extends ProjectileGameObject {
+class PeaGameObject extends ProjectileGameObject {
     constructor(direction) {
 
         //old gameobject parent
@@ -13,14 +13,14 @@ class LaserGameObject extends ProjectileGameObject {
         //   Math.atan2(direction.y, direction.x) + Math.PI / 2
 
         //old controller setup
-        //this.addComponent(new LaserController(), {
+        //this.addComponent(new PeaController(), {
         //   direction: direction
         //})
 
         //projectile parent handles passing direction
-        this.addProjectileController(new LaserController(), direction)
+        this.addProjectileController(new PeaController(), direction)
 
-        //old laser
+        //old pea
         /*
         this.addComponent(new Polygon(), {
             fillStyle: "green",
@@ -33,7 +33,7 @@ class LaserGameObject extends ProjectileGameObject {
         })
         */
 
-        //laser shape
+        //pea shape
         this.addComponent(new Polygon(), {
             fillStyle: "green",
 

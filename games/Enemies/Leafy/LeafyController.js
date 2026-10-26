@@ -1,12 +1,12 @@
-class EnemyController extends BaseEnemyController {
+class LeafyController extends BaseEnemyController {
     fireCooldown = 1500
-    timeSinceLastLaser = 1500
+    timeSinceLastPea = 1500
 
     //leafy remembers where its head was last pointing
     lastDirection = new Vector2(1, 0)
 
     start() {
-        this.timeSinceLastLaser = this.fireCooldown
+        this.timeSinceLastPea = this.fireCooldown
     }
 
     update() {
@@ -15,7 +15,7 @@ class EnemyController extends BaseEnemyController {
             return
         }
 
-        this.timeSinceLastLaser += Engine.fixedDelta
+        this.timeSinceLastPea += GameTime.fixedDelta
 
         if (!this.player) {
             return
@@ -46,13 +46,22 @@ class EnemyController extends BaseEnemyController {
         }
 
         //wait between shots
-        if (this.timeSinceLastLaser < this.fireCooldown) {
+        if (this.timeSinceLastPea < this.fireCooldown) {
             return
         }
 
-        this.timeSinceLastLaser = 0
+        this.timeSinceLastPea = 0
 
-        //laser follows the same compass direction as leafy's head
-        instantiate(new EnemyLaserGameObject(this.lastDirection), this.transform.position.clone())
+        //old pea spawn
+        //pea spawned from leafy's body
+        /*
+        instantiate(new EnemyPeaGameObject(this.lastDirection), this.transform.position.clone())
+        */
+
+        //pea spawns from leafy's muzzle
+        if (head && head.muzzle) {
+            let spawnPosition = TransformHelpers.getWorldPosition(head.muzzle.transform)
+            gameInstantiate(new EnemyPeaGameObject(this.lastDirection), spawnPosition)
+        }
     }
 }

@@ -4,7 +4,34 @@ class PlayerGameObject extends PhysicsGameObject {
         //class PlayerGameObject extends GameObject
 
         //physicsgameobject handles player setup and momentum
-        super("Player", ["Player"], "default")
+        super("Player", ["Player"], "Player")
+
+        //old custom collider setup
+        //PhysicsGameObject already creates the collider so adding another one made two hitboxes
+        /*
+        this.addComponent(new Collider(), {
+            width: 30, height: 30,
+            offsetX: 0, offsetY: 0
+        })
+        */
+
+        //custom player hitbox
+        let collider = this.getComponent(Collider)
+        collider.width = 30
+        collider.height = 30
+        collider.offsetX = 0
+        collider.offsetY = 0
+
+
+        //combat hitbox
+        this.addComponent(new PolygonHitbox(), {
+            points: [
+                new Vector2(10, -80),
+                new Vector2(60, -30),
+                new Vector2(10, 20),
+                new Vector2(-40, -30)
+            ]
+        })
 
         //player movement controls
         this.addComponent(new UpdateComponent())
@@ -12,6 +39,10 @@ class PlayerGameObject extends PhysicsGameObject {
         //player power controls
         //handles pea, fire, future knockback, and power logic
         this.addComponent(new PlayerPowerController())
+
+        //player absorb controls
+        //handles absorbing enemies and taking their power
+        this.addComponent(new PlayerAbsorbController())
 
         //old momentum setup
         //now handled by PhysicsGameObject

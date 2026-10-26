@@ -11,7 +11,7 @@ class PlayerStarGameObject extends GameObject {
 
     constructor() {
         //star is its own player child object
-        super("PlayerStar", ["PlayerChild", "PlayerPower"], "default")
+        super("PlayerStar", ["PlayerChild", "PlayerPower"], "Player")
 
         //same star code that used to be inside PlayerGameObject
         this.addComponent(new PixelShape(), {

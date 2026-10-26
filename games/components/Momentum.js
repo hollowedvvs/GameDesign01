@@ -1,3 +1,5 @@
+//custom game code
+//stores velocity and applies forces, gravity, friction, and movement
 class Momentum extends Component {
     velocityX = 0
     velocityY = 0
