@@ -1,6 +1,6 @@
-//custom game code
-//stores hitboxes and resolves physical objects landing on ground surfaces
-class Collider extends Component {
+//old standalone collider
+//class Collider extends Component {
+class GameCollider extends Collider {
     width = 20
     height = 20
 
@@ -10,6 +10,24 @@ class Collider extends Component {
     isStatic = false
     grounded = false
     surfaceFriction = 0
+
+    //class collider already owns these
+    //isTrigger = false
+    //_points
+
+    //keep our rectangular hitboxes as class polygon points
+    get points() {
+        return this._points ?? [
+            new Vector2(this.offsetX - this.width / 2, this.offsetY - this.height / 2),
+            new Vector2(this.offsetX + this.width / 2, this.offsetY - this.height / 2),
+            new Vector2(this.offsetX + this.width / 2, this.offsetY + this.height / 2),
+            new Vector2(this.offsetX - this.width / 2, this.offsetY + this.height / 2)
+        ]
+    }
+
+    set points(points) {
+        this._points = points
+    }
 
     get left() {
         let position = TransformHelpers.getWorldPosition(this.transform)
@@ -30,10 +48,16 @@ class Collider extends Component {
         let position = TransformHelpers.getWorldPosition(this.transform)
         return position.y + this.offsetY + this.height / 2
     }
+
+    onCollisionStay(other, minimumTransformVector) {
+        if (this.isStatic || this.isTrigger || !other.tags.includes("Ground")) return
+        let ground = other.getComponent(Collider)
+        if (!ground || ground.isTrigger) return
+        CollisionManager.resolveGround(this, ground, minimumTransformVector)
+    }
 }
 
-//custom game code
-//checks custom colliders after movement and resolves ground contact
+//class scene resolves collisions, we keep grounding and surface friction
 class CollisionManager {
     static update() {
         let gameObjects = SceneManager.currentScene.gameObjects
@@ -41,13 +65,10 @@ class CollisionManager {
 
         for (const gameObject of gameObjects) {
             let collider = gameObject.getComponent(Collider)
-
-            if (collider && !gameObject.markForDestroy) {
-                colliders.push(collider)
-            }
+            if (collider && !gameObject.markForDestroy) colliders.push(collider)
         }
 
-        //reset ground information before checking this frame
+        //reset contacts before scene broadcasts onCollisionStay
         for (const collider of colliders) {
             if (!collider.isStatic) {
                 collider.grounded = false
@@ -55,6 +76,9 @@ class CollisionManager {
             }
         }
 
+        //old ground overlap loop
+        //class scene now detects and separates collisions
+        /*
         for (const collider of colliders) {
             if (collider.isStatic) {
                 continue
@@ -74,28 +98,26 @@ class CollisionManager {
                 }
             }
         }
+        */
     }
 
     static isColliding(a, b) {
         return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top
     }
 
-    static resolveGround(objectCollider, groundCollider) {
+    static resolveGround(objectCollider, groundCollider, minimumTransformVector) {
         let momentum = objectCollider.gameObject.getComponent(Momentum)
 
-        if (!momentum || momentum.velocityY < 0) {
-            return
-        }
+        //only land while falling onto the top of the ground
+        if (!momentum || momentum.velocityY < 0 || minimumTransformVector.y >= 0) return
 
-        //checks where the bottom was before this movement
+        //old manual crossing check and position correction
+        //class scene already calculated the overlap and separates the objects
+        /*
         let previousBottom = objectCollider.bottom - momentum.velocityY
-
-        if (previousBottom > groundCollider.top) {
-            return
-        }
-
-        //puts the bottom of the object directly on top of the ground
+        if (previousBottom > groundCollider.top) return
         objectCollider.transform.position.y = groundCollider.top - objectCollider.offsetY - objectCollider.height / 2
+        */
 
         momentum.velocityY = 0
         objectCollider.grounded = true

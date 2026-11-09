@@ -1,4 +1,3 @@
-//custom game code
 //shared parent for objects that use momentum, collision, gravity, and centered projectile spawning
 class PhysicsGameObject extends GameObject {
     flipX = false
@@ -7,28 +6,25 @@ class PhysicsGameObject extends GameObject {
     constructor(name, tags = [], layer = "default") {
         super(name, tags, layer)
 
-        //all physical objects use momentum
+        //momentum now extends the class rigidbody
         this.addComponent(new Momentum())
 
-        //all physical objects use collision
-        this.addComponent(new Collider(), { width: 20, height: 20 })
+        //old standalone collider
+        //this.addComponent(new Collider(), { width: 20, height: 20 })
+        this.addComponent(new GameCollider(), { width: 20, height: 20 })
     }
 
     update() {
-        //controllers and other components add forces first
+        //controllers still update normally
         super.update()
 
+        //old gravity and movement handled by momentum.fixedUpdate
+        /*
         let momentum = this.getComponent(Momentum)
-
-        if (!momentum) {
-            return
-        }
-
-        //gravity comes from the current level
+        if (!momentum) return
         momentum.applyGravity(SceneManager.currentScene.gravity * this.gravityScale)
-
-        //applies all stored movement
         momentum.move()
+        */
     }
 
     get momentum() {
@@ -43,9 +39,7 @@ class PhysicsGameObject extends GameObject {
         let position = TransformHelpers.getWorldPosition(this.transform)
         let collider = this.getComponent(Collider)
 
-        if (!collider) {
-            return position
-        }
+        if (!collider) return position
 
         position.x += collider.offsetX
         position.y += collider.offsetY

@@ -15,8 +15,16 @@ class GroundGameObject extends GameObject {
             points: [new Vector2(-width / 2, 0), new Vector2(width / 2, 0), new Vector2(width / 2, height), new Vector2(-width / 2, height)]
         })
 
-        //where there is ground there is collision
+        //old standalone collider
+        /*
         this.addComponent(new Collider(), {
+            width: width, height: height, offsetY: height / 2, isStatic: true,
+            surfaceFriction: surfaceFriction
+        })
+        */
+
+        //keep custom ground values
+        this.addComponent(new GameCollider(), {
             width: width, height: height, offsetY: height / 2, isStatic: true,
             surfaceFriction: surfaceFriction
         })

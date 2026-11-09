@@ -22,7 +22,7 @@ class GenericLevel extends Scene {
         this.instantiate(new PointsGameObject(), new Vector2(20, 30))
 
         //old camera background setup
-        //Scene now gets the shared color through super("Cyan")
+        //scene now gets the shared color through super("Cyan")
         //this.mainCamera.backgroundColor = "Cyan"
 
         //old parent child test
@@ -35,10 +35,12 @@ class GenericLevel extends Scene {
     }
 
     update() {
-        //class scene updates every game object first
-        super.update()
+        //old order reset grounding after class collisions
+        //super.update()
+        //CollisionManager.update()
 
-        //custom game collision runs after physics objects have moved
+        //clear old contact data before class collisions run
         CollisionManager.update()
+        super.update()
     }
 }

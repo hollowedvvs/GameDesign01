@@ -1,15 +1,21 @@
 class Transform extends Component {
+    /** @type {Vector2} */
     //position of the transform
     position = new Vector2(0, 0)
 
+
+    /** @type {Vector2} */
     //scale of the transform
     scale = new Vector2(1, 1)
 
+
+    /** @type {Number} */
     //rotation in radians
     rotation = 0
 
     parent
 
+    //assigns a parent transform so this object follows its parents transformations
     setParent(parentTransform) {
         this.parent = parentTransform
     }

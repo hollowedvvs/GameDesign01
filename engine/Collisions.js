@@ -1,84 +1,91 @@
 
 class Collisions {
     static isCollisionPointPolygon(point, gameObject) {
-        //get collider points
-        let points = gameObject.getComponent(Collider)?.points
-        if (!Array.isArray(points) || points.length < 3) return false
-
-        //move everything into world space
+        //Move everything into world space
         let worldSpacePoints = []
-        let matrix = gameObject.transform.getWorldMatrix()
-
-        for (const point of points) {
-            let worldPoint = matrix.transformPoint(point)
-            worldSpacePoints.push(new Vector2(worldPoint.x, worldPoint.y))
+        for (let point of gameObject.getComponent(Collider).points) {
+            worldSpacePoints.push(
+                new Vector2(
+                    gameObject.transform.getWorldMatrix().transformPoint(point).x,
+                    gameObject.transform.getWorldMatrix().transformPoint(point).y
+                )
+            )
         }
-
-        //find the axes for projection
+        //Find the axes for projection
         for (let i = 0; i < worldSpacePoints.length; i++) {
             let point1 = worldSpacePoints[i]
             let point2 = worldSpacePoints[(i + 1) % worldSpacePoints.length]
             let edge = point2.minus(point1)
             let axis = edge.orthogonal()
 
-            //check for overlap
+            //Check for overlap
             let pointProjection = point.dot(axis)
             let polygonProjections = worldSpacePoints.map(p => p.dot(axis))
-
-            if (pointProjection < Math.min(...polygonProjections) || pointProjection > Math.max(...polygonProjections)) return false
+            if (pointProjection < Math.min(...polygonProjections) || pointProjection > Math.max(...polygonProjections))
+                return false
         }
-
         return true
     }
 
     static isCollisionPolygonPolygon(gameObject, gameObjectTwo) {
-        //get collider points
-        let points = gameObject.getComponent(Collider)?.points
-        let pointsTwo = gameObjectTwo.getComponent(Collider)?.points
-        if (!Array.isArray(points) || !Array.isArray(pointsTwo) || points.length < 3 || pointsTwo.length < 3) return false
-
-        //move everything into world space
+        //Move everything into world space
         let worldSpacePoints = []
-        let worldSpacePointsTwo = []
-        let matrix = gameObject.transform.getWorldMatrix()
-        let matrixTwo = gameObjectTwo.transform.getWorldMatrix()
-
-        for (const point of points) {
-            let worldPoint = matrix.transformPoint(point)
-            worldSpacePoints.push(new Vector2(worldPoint.x, worldPoint.y))
+        for (let point of gameObject.getComponent(Collider).points) {
+            worldSpacePoints.push(
+                new Vector2(
+                    gameObject.transform.getWorldMatrix().transformPoint(point).x,
+                    gameObject.transform.getWorldMatrix().transformPoint(point).y
+                )
+            )
         }
 
-        for (const point of pointsTwo) {
-            let worldPoint = matrixTwo.transformPoint(point)
-            worldSpacePointsTwo.push(new Vector2(worldPoint.x, worldPoint.y))
+        let worldSpacePointsTwo = []
+        for (let point of gameObjectTwo.getComponent(Collider).points) {
+            worldSpacePointsTwo.push(
+                new Vector2(
+                    gameObjectTwo.transform.getWorldMatrix().transformPoint(point).x,
+                    gameObjectTwo.transform.getWorldMatrix().transformPoint(point).y
+                )
+            )
         }
 
         let axes = []
-
-        //find axes from first polygon
+        //Find the axes for projection
         for (let i = 0; i < worldSpacePoints.length; i++) {
             let point1 = worldSpacePoints[i]
             let point2 = worldSpacePoints[(i + 1) % worldSpacePoints.length]
-            let edge = point2.minus(point1)
-            axes.push(edge.orthogonal())
+            let edge = point2.minus(point1).normalized()
+            let axis = edge.orthogonal()
+            axes.push(axis)
         }
 
-        //find axes from second polygon
         for (let i = 0; i < worldSpacePointsTwo.length; i++) {
             let point1 = worldSpacePointsTwo[i]
             let point2 = worldSpacePointsTwo[(i + 1) % worldSpacePointsTwo.length]
-            let edge = point2.minus(point1)
-            axes.push(edge.orthogonal())
+            let edge = point2.minus(point1).normalized()
+            let axis = edge.orthogonal()
+            axes.push(axis)
         }
 
-        //check for overlap on every axis
+        let minimumTransformVector = new Vector2(Number.MAX_VALUE, Number.MAX_VALUE)
         for (const axis of axes) {
+            //Check for overlap
             let polygonProjections = worldSpacePoints.map(p => p.dot(axis))
             let polygonProjectionsTwo = worldSpacePointsTwo.map(p => p.dot(axis))
-
-            if (Math.max(...polygonProjectionsTwo) < Math.min(...polygonProjections) || Math.min(...polygonProjectionsTwo) > Math.max(...polygonProjections)) return false
+            if (Math.max(...polygonProjectionsTwo) < Math.min(...polygonProjections) || Math.min(...polygonProjectionsTwo) > Math.max(...polygonProjections))
+                return false
+            //else...the shadows overlapped
+            const minOverlap = Math.min(
+                Math.max(...polygonProjectionsTwo) - Math.min(...polygonProjections),
+                Math.max(...polygonProjections) - Math.min(...polygonProjectionsTwo)
+            )
+            if (minOverlap < minimumTransformVector.magnitude) {
+                minimumTransformVector = axis.normalized().scaled(minOverlap)
+            }
         }
-
-        return true
+        if(gameObject.transform.position.minus(gameObjectTwo.transform.position).dot(minimumTransformVector) > 0)
+            return minimumTransformVector
+        //else
+        return minimumTransformVector.scaled(-1)
     }
 }

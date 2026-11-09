@@ -1,8 +1,10 @@
 class Engine {
     //canvas html element
+    /** @type {HTMLCanvasElement} */
     static canvas
 
     //2d context used to draw everything
+    /** @type {CanvasRenderingContext2D} */
     static ctx
 
     static layers = ["default", "UI"]
@@ -22,6 +24,8 @@ class Engine {
         addEventListener("mousedown", Input.mousedown)
         addEventListener("mouseup", Input.mouseup)
         addEventListener("mousemove", Input.mousemove)
+        //ui context menu
+        addEventListener("contextmenu", e=>e.preventDefault())
 
         SceneManager.nextScene = nextScene
 

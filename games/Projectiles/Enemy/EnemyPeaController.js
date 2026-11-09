@@ -2,6 +2,7 @@ class EnemyPeaController extends ProjectileController {
     //enemy pea settings
     speed = 7
     destroyOffscreen = true
+    targetTag = "Player"
 
     //old enemy pea controller
     //movement and screen bounds are now handled by ProjectileController

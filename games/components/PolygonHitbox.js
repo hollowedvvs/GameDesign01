@@ -33,7 +33,7 @@ class PolygonHitbox extends Polygon {
 
         let hitboxObject = {
             transform: this.transform,
-            getComponent: component => component == Polygon ? polygon : null
+            getComponent: component => component == Collider ? polygon : null
         }
 
         return Collisions.isCollisionPointPolygon(point, hitboxObject)

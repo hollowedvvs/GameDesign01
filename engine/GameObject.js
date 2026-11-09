@@ -1,19 +1,28 @@
+
 class GameObject {
     //components attached to this gameobject
+    /** @type {Component[]} */
     components = []
 
     //marks the gameobject to be removed by the scene
+    /** @type {Boolean} */
     markForDestroy = false
 
+    /** @type {String} */
     name
+
     tags = []
     layer = "default"
 
     //transform is always the first component
+    /** @returns {Transform} */
     get transform() {
-        return this.components[0]
+        return /** @type {Transform} */ (this.components[0])
     }
 
+    /**
+     * @param {String} name
+     */
     constructor(name, tags = [], layer = "default") {
         this.addComponent(new Transform())
         this.name = name
@@ -22,6 +31,10 @@ class GameObject {
     }
 
     //adds a component and applies any given settings to it
+    /**
+     * @param {Component} component
+     * @param {Object} parameters
+     */
     addComponent(component, parameters) {
         Object.assign(component, parameters)
         this.components.push(component)
@@ -53,6 +66,9 @@ class GameObject {
     }
 
     //draws the object using its world transform
+    /**
+     * @param {CanvasRenderingContext2D} ctx
+     */
     draw(ctx) {
         ctx.save()
         ctx.setTransform(ctx.getTransform().multiply(this.transform.getWorldMatrix()))
@@ -71,11 +87,20 @@ class GameObject {
     }
 
     //gets the first component matching a class
+    /**
+     * @template {Component} T
+     * @param {new (...args: any[]) => T} type
+     * @returns {T|undefined}
+     */
     getComponent(type) {
-        return this.components.find(c => c instanceof type)
+        return /** @type {T|undefined} */ (this.components.find(c => c instanceof type))
     }
 
     //finds the first gameobject with a matching name
+    /**
+     * @param {String} name
+     * @returns {GameObject|undefined}
+     */
     static find(name) {
         //old function version
         //return SceneManger.currentScene.gameObjects.find(function(go){return go.name == name})

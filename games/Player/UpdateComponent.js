@@ -39,6 +39,8 @@ class UpdateComponent extends Component {
     jumpStrength = -15
     jumpsRemaining = 2
 
+    
+
     //old pea power
     //now handled by PlayerPowerController
     /*

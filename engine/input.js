@@ -1,5 +1,6 @@
 class Input {
     //keys currently being held
+    /** @type {string[]} */
     static keysDown = []
 
     //keys pressed or released this frame
@@ -42,6 +43,7 @@ class Input {
         Input.mouseButtonsUpThisFrame.push(event.button)
     }
 
+    /** @param {KeyboardEvent} event */
     static keydown(event) {
         //doesnt add the key again if it is already held
         //event.code is used for the key value
@@ -51,6 +53,7 @@ class Input {
         }
     }
 
+    /** @param {KeyboardEvent} event */
     static keyup(event) {
         //javascript needs the index before removing something from an array
         let index = Input.keysDown.indexOf(event.code)
