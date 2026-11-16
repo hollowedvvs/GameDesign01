@@ -1,4 +1,3 @@
-//custom game code
 //combines convex shapes into one combat hitbox
 class PolygonHitbox extends Polygon {
     shapes = []

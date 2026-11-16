@@ -3,10 +3,6 @@ class Collider extends Component {
 
     _points
     get points() {
-        //old fallback for missing polygon
-        //let polygon = this.gameObject.getComponent(Polygon)
-        //return this._points ?? polygon?.points ?? []
-
         return this._points ?? this.gameObject.getComponent(Polygon).points
     }
 

@@ -1,4 +1,3 @@
-//custom game code
 //updates the global score and points ui when points change
 class PointsController extends Component {
     start() {
@@ -24,11 +23,4 @@ class PointsController extends Component {
         textLabel.text = Globals.points + " points"
     }
 
-    //old score display system
-    //updated the text every single frame
-    /*
-    update() {
-        this.gameObject.getComponent(TextLabel).text = Globals.points + " points"
-    }
-    */
 }

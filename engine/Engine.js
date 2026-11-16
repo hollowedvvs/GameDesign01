@@ -1,13 +1,18 @@
 class Engine {
-    //canvas html element
-    /** @type {HTMLCanvasElement} */
     static canvas
 
-    //2d context used to draw everything
-    /** @type {CanvasRenderingContext2D} */
     static ctx
 
     static layers = ["default", "UI"]
+
+    static aspectRatio
+
+    static cameraWidthInWorldSpace
+
+    static letterBoxingWidth = 0
+    static letterBoxingHeight = 0
+
+
 
     static start(nextScene, settings) {
         //grabs the canvas
@@ -31,6 +36,8 @@ class Engine {
 
         if (settings) {
             Engine.layers = settings.layers
+            Engine.aspectRatio = settings.aspectRatio
+            Engine.cameraWidthInWorldSpace = settings.cameraWidthInWorldSpace
         }
 
         //starts the game loop when the browser is ready
@@ -53,9 +60,6 @@ class Engine {
     }
 
     static update() {
-        //old game specific update call
-        //update()
-
         SceneManager.currentScene.start()
         SceneManager.currentScene.update()
     }
@@ -65,10 +69,6 @@ class Engine {
         //changing the canvas size also clears it
         Engine.canvas.width = window.innerWidth
         Engine.canvas.height = window.innerHeight
-
-        //old game specific draw call
-        //draw(Engine.ctx)
-
         SceneManager.currentScene.draw(Engine.ctx)
     }
 }

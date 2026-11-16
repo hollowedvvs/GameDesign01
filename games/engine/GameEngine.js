@@ -1,5 +1,3 @@
-//custom game code
-//keeps this game at 60 updates per second and a fixed 960x540 canvas without changing the class Engine
 class GameEngine extends Engine {
     static lastTime = 0
     static accumulator = 0
@@ -8,26 +6,28 @@ class GameEngine extends Engine {
         Engine.canvas = document.querySelector("#canv")
         Engine.ctx = Engine.canvas.getContext("2d")
 
-        //game resolution
-        Engine.canvas.width = 960
-        Engine.canvas.height = 540
-
-        //class input events
         addEventListener("keydown", Input.keydown)
         addEventListener("keyup", Input.keyup)
         addEventListener("mousedown", Input.mousedown)
         addEventListener("mouseup", Input.mouseup)
-        addEventListener("mousemove", Input.mousemove)
+
+        //convert mouse coordinates to canvas position
+        addEventListener("mousemove", e => {
+            let rect = Engine.canvas.getBoundingClientRect()
+            Input.mousemove({
+                clientX: e.clientX - rect.left,
+                clientY: e.clientY - rect.top
+            })
+        })
 
         SceneManager.nextScene = nextScene
-
-        //loads first scene before the first frame draws
         SceneManager.update()
 
         if (settings) {
             Engine.layers = settings.layers
+            Engine.aspectRatio = settings.aspectRatio
+            Engine.cameraWidthInWorldSpace = settings.cameraWidthInWorldSpace
         }
-
         requestAnimationFrame(GameEngine.gameLoop)
     }
 
@@ -35,8 +35,6 @@ class GameEngine extends Engine {
         if (GameEngine.lastTime === 0) {
             GameEngine.lastTime = currentTime
         }
-
-        //time since the last browser frame
         let elapsedTime = currentTime - GameEngine.lastTime
         GameEngine.lastTime = currentTime
         GameEngine.accumulator += elapsedTime
@@ -45,7 +43,6 @@ class GameEngine extends Engine {
             GameEngine.update()
             GameEngine.accumulator -= GameTime.fixedDelta
         }
-
         GameEngine.draw()
         requestAnimationFrame(GameEngine.gameLoop)
     }
@@ -57,9 +54,5 @@ class GameEngine extends Engine {
 
         Time.update()
         Input.update()
-    }
-
-    static draw() {
-        SceneManager.currentScene.draw(Engine.ctx)
     }
 }

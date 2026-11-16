@@ -21,18 +21,8 @@ class TextLabel extends Component {
         //engine already handles canvas size and clearing
         ctx.save()
 
-        //old transform drawing
-        //gameobject now handles the transform before components draw
-        //ctx.translate(this.transform.position.x, this.transform.position.y)
-        //ctx.scale(this.transform.scale.x, this.transform.scale.y)
-        //ctx.rotate(this.transform.rotation)
-
         ctx.fillStyle = this.fillStyle
         ctx.font = this.font
-
-        //old hardcoded alignment
-        //ctx.textAlign = "left"
-        //ctx.textBaseline = "middle"
 
         //alignment now uses component settings
         ctx.textAlign = this.textAlign

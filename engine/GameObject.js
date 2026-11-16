@@ -87,23 +87,12 @@ class GameObject {
     }
 
     //gets the first component matching a class
-    /**
-     * @template {Component} T
-     * @param {new (...args: any[]) => T} type
-     * @returns {T|undefined}
-     */
     getComponent(type) {
         return /** @type {T|undefined} */ (this.components.find(c => c instanceof type))
     }
 
     //finds the first gameobject with a matching name
-    /**
-     * @param {String} name
-     * @returns {GameObject|undefined}
-     */
     static find(name) {
-        //old function version
-        //return SceneManger.currentScene.gameObjects.find(function(go){return go.name == name})
         return SceneManager.currentScene.gameObjects.find(go => go.name == name)
     }
 

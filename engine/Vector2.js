@@ -1,18 +1,10 @@
 class Vector2 {
     //x part of the vector
-    /** @type {Number} */
     x
     //y part of the vector
-    /** @type {Number} */
     y
 
-
-
     //constructor is similar to __init__ in python
-    /**
-    * @param {Number} x
-    * @param {Number} y
-    */
     constructor(x, y) {
         //this is similar to self in python
         //incoming values are saved to this instance
@@ -21,10 +13,6 @@ class Vector2 {
     }
 
     //adds another vector without changing this one
-    /**
-    * @param {Vector2} other
-     * @returns {Vector2}
-    */
     plus(other) {
         return new Vector2(this.x + other.x, this.y + other.y)
     }
@@ -40,7 +28,6 @@ class Vector2 {
     }
 
     //makes a new vector with the same values
-    /** @returns {Vector2} */
     clone() {
         return new Vector2(this.x, this.y)
     }

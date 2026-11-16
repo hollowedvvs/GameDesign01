@@ -1,7 +1,7 @@
 
 class Collisions {
     static isCollisionPointPolygon(point, gameObject) {
-        //Move everything into world space
+        //move everything into world space
         let worldSpacePoints = []
         for (let point of gameObject.getComponent(Collider).points) {
             worldSpacePoints.push(
@@ -11,7 +11,7 @@ class Collisions {
                 )
             )
         }
-        //Find the axes for projection
+        //find the axes for projection
         for (let i = 0; i < worldSpacePoints.length; i++) {
             let point1 = worldSpacePoints[i]
             let point2 = worldSpacePoints[(i + 1) % worldSpacePoints.length]
@@ -28,7 +28,7 @@ class Collisions {
     }
 
     static isCollisionPolygonPolygon(gameObject, gameObjectTwo) {
-        //Move everything into world space
+        //move everything into world space
         let worldSpacePoints = []
         for (let point of gameObject.getComponent(Collider).points) {
             worldSpacePoints.push(

@@ -1,28 +1,37 @@
 <html>
-
 <head>
     <title>Space Shooter</title>
 
     <style>
         * {
-            border: 2px solid black;
-            background: rgb(36, 207, 250);
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            border: none;
         }
     </style>
 </head>
 
 <body>
-
     <canvas id="canv"></canvas>
 
-    <!-- class engine demonstrating the bongo -->
+    <!-- professor engine -->
     <script src="../engine/Vector2.js"></script>
     <script src="../engine/Input.js"></script>
     <script src="../engine/Component.js"></script>
     <script src="../engine/Time.js"></script>
     <script src="../engine/Collisions.js"></script>
 
-    <!-- class engine components -->
+    <!-- engine components -->
     <script src="../engine/components/Transform.js"></script>
     <script src="../engine/components/Polygon.js"></script>
     <script src="../engine/components/TextLabel.js"></script>
@@ -31,21 +40,20 @@
     <script src="../engine/components/RigidBody.js"></script>
     <script src="../engine/components/Collider.js"></script>
 
-    <!-- class engine gameobjects and scenes -->
+    <!-- engine gameobjects and scenes -->
     <script src="../engine/GameObject.js"></script>
     <script src="../engine/Scene.js"></script>
     <script src="../engine/SceneManager.js"></script>
     <script src="../engine/Engine.js"></script>
 
-    <!-- custom game engine helpers -->
-    <script src="engine/GameInput.js"></script>
+    <!-- game engine helpers -->
     <script src="engine/GameTime.js"></script>
     <script src="engine/GameEngine.js"></script>
     <script src="engine/GameInstantiate.js"></script>
     <script src="engine/TransformHelpers.js"></script>
     <script src="engine/Direction8.js"></script>
 
-    <!-- custom game components -->
+    <!-- game components -->
     <script src="components/PixelShape.js"></script>
     <script src="components/Health.js"></script>
     <script src="components/PointsController.js"></script>
@@ -54,10 +62,7 @@
     <script src="components/Collider.js"></script>
     <script src="components/PolygonHitbox.js"></script>
 
-    <!-- old unused draw component -->
-    <!--<script src="components/DrawComponent.js"></script>-->
-
-    <!-- custom physics parent -->
+    <!-- physics parent -->
     <script src="engine/PhysicsGameObject.js"></script>
 
     <!-- globals -->
@@ -97,9 +102,6 @@
     <script src="Enemies/Fire/FireEnemyController.js"></script>
     <script src="Enemies/Fire/FireEnemyGameObject.js"></script>
 
-    <!-- enemy helper -->
-    <!--<script src="Helper/HelperGameObject.js"></script>-->
-
     <!-- player -->
     <script src="Player/UpdateComponent.js"></script>
     <script src="Player/PlayerPowerController.js"></script>
@@ -128,7 +130,5 @@
     <script>
         GameEngine.start(Level01, Settings)
     </script>
-
 </body>
-
 </html>
